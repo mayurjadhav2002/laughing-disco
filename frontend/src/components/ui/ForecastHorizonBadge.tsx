@@ -10,7 +10,9 @@ export function ForecastHorizonBadge() {
         <p className="text-[10px] font-semibold text-indigo-400 uppercase tracking-wider">
           Forecast Horizon
         </p>
-        <p className="text-sm font-bold text-indigo-700 mt-0.5">Day-Ahead (24h)</p>
+        <p className="text-sm font-bold text-indigo-700 mt-0.5">
+          Day-Ahead (24h)
+        </p>
         <p className="text-[10px] text-indigo-400 mt-0.5 leading-snug">
           Forecasts published 24h prior to delivery
         </p>

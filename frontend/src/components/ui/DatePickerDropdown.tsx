@@ -6,7 +6,6 @@ import { formatDate } from "@/utils/chartUtils";
 const JAN_START = new Date(2026, 0, 1);
 const JAN_END = new Date(2026, 0, 31);
 
-/** Pure predicate — true for any date outside January 2026 */
 export function isOutsideJan2026(date: Date): boolean {
   return date < JAN_START || date > JAN_END;
 }
@@ -22,7 +21,8 @@ export function DatePickerDropdown({ value, onChange }: Props) {
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+      if (ref.current && !ref.current.contains(e.target as Node))
+        setOpen(false);
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
@@ -30,7 +30,6 @@ export function DatePickerDropdown({ value, onChange }: Props) {
 
   return (
     <div ref={ref} className="relative">
-      {/* Trigger button */}
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
@@ -50,7 +49,8 @@ export function DatePickerDropdown({ value, onChange }: Props) {
 
       {/* Dropdown panel */}
       {open && (
-        <div className="absolute z-50 top-full mt-2 left-0
+        <div
+          className="absolute z-50 top-full mt-2 left-0
           bg-white border border-slate-100 rounded-2xl shadow-2xl overflow-hidden
           [&_.rdp]:p-0
           [&_.rdp-caption_select]:text-xs [&_.rdp-caption_select]:rounded-md

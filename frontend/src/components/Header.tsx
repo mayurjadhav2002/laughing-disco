@@ -1,13 +1,10 @@
-import { Wind } from "lucide-react";
-
 export default function Header() {
   return (
     <header className="mb-8 flex items-center justify-between">
       <div className="flex items-center gap-4">
-        {/* Title & Subtitle */}
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-            Energy Trading Platform
+          <h1 className="text-4xl font-bold text-slate-800 tracking-tight">
+            Forecasting Analytics
           </h1>
           <p className="text-sm text-slate-500 font-medium mt-1">
             Wind Generation Analysis • January 2026
