@@ -1,6 +1,6 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from typing import Optional, List
-from pydantic import computed_field
+from typing import Optional, List, Union, Any
+from pydantic import computed_field, field_validator
 class Settings(BaseSettings):
     # DATABASE CONFIGURATION
     DATABASE_URL: Optional[str] = None
@@ -18,10 +18,17 @@ class Settings(BaseSettings):
         return f"{self.ELEXON_BMRS_BASE_URL}/WINDFOR/stream"
 
     # CORS CONFIGURATION
-    ALLOWED_ORIGINS: List[str] = [
+    ALLOWED_ORIGINS: Union[str, List[str]] = [
         "http://localhost:5173",
         "http://localhost:3000"
     ]
+
+    @field_validator("ALLOWED_ORIGINS", mode="before")
+    @classmethod
+    def parse_allowed_origins(cls, v: Any) -> List[str]:
+        if isinstance(v, str):
+            return [origin.strip() for origin in v.split(",") if origin.strip()]
+        return v
 
     # DEBUG CONFIGURATION
     DEBUG: bool = True
