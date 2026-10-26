@@ -1,6 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import { Target, ShieldCheck, Zap } from "lucide-react";
-import { useWindSummary } from "@/hooks/useWindSummary";
+import { useWindSummary } from "../hooks/useWindSummary";
 
 interface KPICardProps {
   title: string;

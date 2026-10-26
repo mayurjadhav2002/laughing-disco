@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { formatDate } from "@/utils/chartUtils";
-import { DatePickerDropdown } from "@/components/ui/DatePickerDropdown";
-import { DailySummary } from "@/components/ui/DailySummary";
-import { ForecastHorizonBadge } from "@/components/ui/ForecastHorizonBadge";
-import { GenerationChart } from "@/components/GenerationChart";
-import { useDailyProfile } from "@/hooks/useDailyProfile";
-import { formatLocalDate } from "@/utils/dateFormatter";
+import { formatDate } from "../utils/chartUtils";
+import { DailySummary } from "./ui/DailySummary";
+import { ForecastHorizonBadge } from "./ui/ForecastHorizonBadge";
+import { GenerationChart } from "./GenerationChart";
+import { useDailyProfile } from "../hooks/useDailyProfile";
+import { formatLocalDate } from "../utils/dateFormatter";
+import { DatePickerDropdown } from "./ui/DatePickerDropdown";
 
 export default function Charts() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date(2026, 0, 1));

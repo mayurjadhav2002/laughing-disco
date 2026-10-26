@@ -9,7 +9,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { AlertCircle } from "lucide-react";
-import type { IntradayPoint } from "@/types/wind";
+import type { IntradayPoint } from "../types/wind";
 
 interface ChartPoint {
   timeLabel: string;

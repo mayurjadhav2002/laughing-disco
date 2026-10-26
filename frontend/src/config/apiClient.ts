@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "@/api";
+import { API_BASE_URL } from "../api";
 import axios from "axios";
 
 export const apiClient = axios.create({

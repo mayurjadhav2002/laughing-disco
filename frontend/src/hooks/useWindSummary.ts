@@ -1,6 +1,6 @@
-import { API_ENDPOINTS } from "@/api";
-import { apiClient } from "@/config/apiClient";
-import type { MonthlySummaryResponse } from "@/types/wind";
+import { API_ENDPOINTS } from "../api";
+import { apiClient } from "../config/apiClient";
+import type { MonthlySummaryResponse } from "../types/wind";
 import { useQuery } from "@tanstack/react-query";
 
 export const useWindSummary = () => {

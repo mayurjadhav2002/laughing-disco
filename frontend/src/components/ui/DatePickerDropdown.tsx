@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Calendar as CalendarIcon, ChevronDown } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
-import { formatDate } from "@/utils/chartUtils";
+import { Calendar } from "./calendar";
+import { formatDate } from "../../utils/chartUtils";
 
 const JAN_START = new Date(2026, 0, 1);
 const JAN_END = new Date(2026, 0, 31);
