@@ -57,22 +57,48 @@ function ChartEmpty() {
 
 function ChartTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
+
+  const actual = payload.find((p: any) => p.dataKey === "actual")?.value;
+  const forecast = payload.find((p: any) => p.dataKey === "forecast")?.value;
+  const diff =
+    typeof actual === "number" && typeof forecast === "number"
+      ? actual - forecast
+      : null;
+
   return (
-    <div className="bg-white border border-slate-100 rounded-xl shadow-xl p-3 text-xs">
-      <p className="font-semibold text-slate-600 mb-2">Time: {label}</p>
+    <div className="bg-white border border-slate-100 rounded-xl shadow-xl p-3 text-xs min-w-[150px]">
+      <p className="font-semibold text-slate-700 mb-2 border-b border-slate-100 pb-1">
+        Time: <span className="font-mono text-blue-600">{label}</span>
+      </p>
       {payload.map((p: any) => (
-        <div key={p.dataKey} className="flex items-center gap-2 mb-1">
-          <span
-            className="w-2 h-2 rounded-full"
-            style={{ background: p.color }}
-          />
-          <span className="text-slate-500 capitalize">{p.name}:</span>
+        <div
+          key={p.dataKey}
+          className="flex items-center justify-between gap-3 mb-1"
+        >
+          <div className="flex items-center gap-1.5">
+            <span
+              className="w-2 h-2 rounded-full"
+              style={{ background: p.color }}
+            />
+            <span className="text-slate-500 capitalize">{p.name}:</span>
+          </div>
           <span className="font-bold text-slate-800 tabular-nums">
-            {typeof p.value === "number" ? p.value.toLocaleString() : p.value}{" "}
-            MW
+            {typeof p.value === "number" ? p.value.toLocaleString() : p.value} MW
           </span>
         </div>
       ))}
+      {diff !== null && (
+        <div className="flex items-center justify-between gap-3 pt-1 border-t border-slate-100 mt-1 text-[11px]">
+          <span className="text-slate-400">Variance:</span>
+          <span
+            className={`font-semibold tabular-nums ${
+              diff >= 0 ? "text-emerald-600" : "text-amber-600"
+            }`}
+          >
+            {diff >= 0 ? `+${diff.toFixed(1)}` : diff.toFixed(1)} MW
+          </span>
+        </div>
+      )}
     </div>
   );
 }
@@ -126,7 +152,7 @@ function VerticalTick({
   y?: number;
   payload?: { value: string };
 }) {
-  if (!payload?.value) return null;
+  if (!payload?.value || !payload.value.endsWith(":00")) return null;
   return (
     <g transform={`translate(${x},${y})`}>
       <text
@@ -138,6 +164,32 @@ function VerticalTick({
         fill="#94a3b8"
         fontSize={10}
         transform="rotate(-90)"
+      >
+        {payload.value}
+      </text>
+    </g>
+  );
+}
+
+function HorizontalTick({
+  x = 0,
+  y = 0,
+  payload,
+}: {
+  x?: number;
+  y?: number;
+  payload?: { value: string };
+}) {
+  if (!payload?.value || !payload.value.endsWith(":00")) return null;
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text
+        x={0}
+        y={0}
+        dy={12}
+        textAnchor="middle"
+        fill="#94a3b8"
+        fontSize={10}
       >
         {payload.value}
       </text>
@@ -171,9 +223,8 @@ function ProfileAreaChart({
         />
         <XAxis
           dataKey="timeLabel"
-          tick={
-            needsVertical ? <VerticalTick /> : { fontSize: 10, fill: "#94a3b8" }
-          }
+          tick={needsVertical ? <VerticalTick /> : <HorizontalTick />}
+          tickFormatter={(v: string) => (v && v.endsWith(":00") ? v : "")}
           height={needsVertical ? 48 : 30}
           interval={0}
           tickLine={false}
@@ -244,9 +295,15 @@ export function GenerationChart({ data, dateLabel, isLoading, error }: Props) {
     const timeMap = new Map<string, ChartPoint>();
 
     data.forEach((item) => {
-      const timeLabel = item.start_time
-        ? item.start_time.split("T")[1]?.slice(0, 5)
-        : "";
+      let timeLabel = "";
+      if (typeof item.start_time === "string") {
+        const timePart = item.start_time.includes("T")
+          ? item.start_time.split("T")[1]
+          : item.start_time.includes(" ")
+          ? item.start_time.split(" ")[1]
+          : item.start_time;
+        timeLabel = timePart ? timePart.slice(0, 5) : "";
+      }
       if (!timeLabel) return;
 
       if (!timeMap.has(timeLabel)) {
